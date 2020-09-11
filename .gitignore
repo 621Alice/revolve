@@ -5,6 +5,7 @@ __pycache__/
 # C extensions
 *.so
 *.dylib
+*.pyc
 
 # Distribution / packaging
 .Python
@@ -73,6 +74,7 @@ target/
 .python-version
 Pipfile
 Pipfile.lock
+__pycache__/
 
 # Revolve related
 *.sdf
