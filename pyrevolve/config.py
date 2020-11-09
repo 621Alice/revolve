@@ -134,7 +134,7 @@ parser.add_argument(
 
 parser.add_argument(
     '--evaluation-time',
-    default=30, type=float,
+    default=100, type=float,
     help="In offline evolution, this determines the length of the experiment run."
     # For old_online_fitness:
     #   "The size of the `speed window` for each robot, i.e. the number of "
