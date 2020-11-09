@@ -153,7 +153,9 @@ class SimulatorQueue:
             return robot_fitness, None
         else:
             # Change this `max_age` from the command line parameters (--evalution-time)
-            max_age = conf.evaluation_time
+            max_age = conf.evaluation_time[self._settings.world]
+            logger.info(f'World {self._settings.world} Evaluation Time {conf.evaluation_time[self._settings.world]}')
+            
             robot_manager = await simulator_connection.insert_robot(robot.phenotype, Vector3(0, 0, self._settings.z_start), max_age)
             start = time.time()
             # Start a run loop to do some stuff
