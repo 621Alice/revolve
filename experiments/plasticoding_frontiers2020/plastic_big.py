@@ -19,6 +19,8 @@ from pyrevolve.util.supervisor.analyzer_queue import AnalyzerQueue
 from pyrevolve.custom_logging.logger import logger
 import sys
 import time
+import copy
+import random
 
 async def run():
     """
@@ -26,9 +28,9 @@ async def run():
     """
 
     # experiment params #
-    num_generations = 200
-    population_size = 100
-    offspring_size = 100
+    num_generations = 2
+    population_size = 10
+    offspring_size = 10
     front = 'slaves'
 
     # environment world and z-start
@@ -74,7 +76,16 @@ async def run():
 
     fitness_function = {'plane': fitness_function_plane,
                         'tilted5': fitness_function_plane}
+    settings = parser.parse_args()
 
+    simulator_queue = {}
+    analyzer_queue = None
+    previous_port = None
+    
+    #set evaluation time
+    evaluation_time = copy.deepcopy(settings.evaluation_time)
+    e_time = {"plane": 0.5 * evaluation_time, "tilted5": 0.1 * evaluation_time}
+    
     population_conf = PopulationConfig(
         population_size=population_size,
         genotype_constructor=random_initialization,
@@ -88,7 +99,7 @@ async def run():
         parent_selection=lambda individuals: multiple_selection(individuals, 2, tournament_selection, environments),
         population_management=steady_state_population_management,
         population_management_selector=tournament_selection,
-        evaluation_time=settings.evaluation_time,
+        evaluation_time=e_time,
         offspring_size=offspring_size,
         experiment_name=settings.experiment_name,
         experiment_management=experiment_management,
@@ -97,12 +108,7 @@ async def run():
     )
 
 
-    settings = parser.parse_args()
-
-    simulator_queue = {}
-    analyzer_queue = None
-
-    previous_port = None
+    
     for environment in environments:
 
         settings.world = environment
